@@ -1,9 +1,7 @@
 Quick Java Validator
 ====================
-(based from Code Igniter and Laravel)
--------------------------------------
 
-An easy-to-use validation for fields/variables expecially for GET/POST requests.
+An easy-to-use validation for fields/variables expecially for GET/POST requests. I based this to both Code Igniter and Laravel validations.
 
 how to use:
 --------------
