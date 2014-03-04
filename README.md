@@ -18,6 +18,6 @@ if(val.fail()) {
 }
 ```
 
-##### NOTE: This is still under development. After finishing version 1, I will start accepting commits. :)
+##### NOTE: This is still under development. When I'm done with v1.0.0, I will start accepting commits. :)
 
     
