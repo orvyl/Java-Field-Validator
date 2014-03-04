@@ -1,19 +1,25 @@
-JAVA VALIDATION
-=====================================================
+Quick Java Validator
+====================
+(based from Code Igniter and Laravel)
+-------------------------------------
 
-An easy-to-use validation class for java (based from Code Igniter and Laravel).
+An easy-to-use validation for fields/variables expecially for GET/POST requests.
 
-SAMPLE USE:
-*****
-  String valueToTest = "";
+how to use:
+--------------
 
-  Validation val = Validation.getValidator();
-  val.add(valueToTest, "Display Name", "required|min:4|either:value1,value 2,next value to test");
+```sh
+String valueToTest = "";
 
-  if(val.fail()) {
-    for(String errorMsg : val.getErrorMessages)
-      System.out.println("errorMsg");
-  }
-*****
+Validation val = Validation.getValidator();
+val.add(valueToTest, "Display Name", "required|min:4|either:value1,value 2,next value to test");
 
-NOTE: It is still under development. Version 1.0.0 will be on saturday!
+if(val.fail()) {
+  for(String errorMsg : val.getErrorMessages)
+    System.out.println("errorMsg");
+}
+```
+
+##### NOTE: This is still under development. After finishing version 1, I will start accepting commits. :)
+
+    
