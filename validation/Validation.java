@@ -20,11 +20,11 @@ import java.util.Map.Entry;
  */
 public class Validation {
 	
-	private Map<String, HashMap<String, String>> errorMessage;
+	private Map<String, HashMap<String, String>> errorMessages;
 	private boolean noError;
 	
 	public Validation() {
-		errorMessage = new HashMap<String, HashMap<String, String>>();
+		errorMessages = new HashMap<String, HashMap<String, String>>();
 		noError = true;
 	}
 	
@@ -39,11 +39,12 @@ public class Validation {
 		for(Entry<String, String[]> entry : methodAndParameter.entrySet()) {
 			methodParam = new ArrayList<Object>();
 			methodParam.add(valueToValidate);
+			
 			if(entry.getValue() != null){
 				for(String param : entry.getValue())
 					methodParam.add(param);
 			}
-			performValidation(entry.getKey(), methodParam);
+			performValidation(entry.getKey(), methodParam, displayFieldName);
 		}
 	}
 	
@@ -64,17 +65,18 @@ public class Validation {
 		return methodAndParameter;
 	}
 	
-	public void performValidation(String methodName, List<Object> param) {
+	public void performValidation(String methodName, List<Object> param, String fieldDisplayName) {
 		ValidationRules validateRule = ValidationRules.getRules();
-		boolean passed = true;
+		String defaultErrorMessage;
 		try {
 			
 			Method methodToCall = validateRule.getClass().getMethod(methodName + "Rule", List.class);
-			passed = (boolean) methodToCall.invoke(validateRule, param);
-			if(passed)
-				System.out.println("PASADO!");
-			else
-				System.out.println("BAGSAK!");
+			defaultErrorMessage = (String) methodToCall.invoke(validateRule, param);
+			
+			if(defaultErrorMessage != ""){
+				if(noError) noError = false;
+				
+			}
 			
 		} catch (NoSuchMethodException e) {
 			System.out.println("ERROR: Method: " + methodName + " is not suppported.");
@@ -103,11 +105,11 @@ public class Validation {
 	}
 
 	public Map<String, HashMap<String, String>> getErrorMessage() {
-		return errorMessage;
+		return errorMessages;
 	}
 
 	public void setErrorMessage(Map<String, HashMap<String, String>> errorMessage) {
-		this.errorMessage = errorMessage;
+		this.errorMessages = errorMessage;
 	}
 	
 	// for testing purpose only

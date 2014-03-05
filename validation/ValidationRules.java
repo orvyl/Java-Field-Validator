@@ -11,20 +11,22 @@ public class ValidationRules {
 		return rules;
 	}
 	
-	public boolean requiredRule(List<Object> param) {
-		System.out.println("**requiredRule");
+	public String requiredRule(List<Object> param) {
+		String errMsg = "";
 		String valueToTest = param.get(0).toString();
-		if(valueToTest == "") return false;
-		return true;
+		
+		if(valueToTest == "") errMsg = ErrorMessage.REQUIRED.getErrorMessage();
+		
+		return errMsg;
 	}
 	
-	public boolean minRule(List<Object> param) {
+	public String minRule(List<Object> param) {
 		System.out.println("**minRule");
-		return false;
+		return "";
 	}
 	
-	public boolean maxRule(List<Object> param) {
+	public String maxRule(List<Object> param) {
 		System.out.println("**maxRule");
-		return false;
+		return "";
 	}
 }
