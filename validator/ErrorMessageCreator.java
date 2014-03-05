@@ -13,8 +13,8 @@ public final class ErrorMessageCreator {
 	
 	public String requiredErrorMessage(String errMsgUser, String displayFieldName, ArrayList<String> param) {
 		String msg = errMsgUser == "" ? DefaultErrorMessage.REQUIRED.getErrorMessage():errMsgUser;
-		System.out.println("ORIGINAL MESSAGE: " + errMsgUser);
-		System.out.println("OUTPUT from creator: " + msg.replaceAll(":fieldname", errMsgUser));
-		return msg.replaceAll(":fieldname", errMsgUser);
+		System.out.println(msg);
+		System.out.println("OUTPUT from creator: " + msg.replaceAll(":fieldname", displayFieldName));
+		return msg.replaceAll(":fieldname", displayFieldName);
 	}
 }
