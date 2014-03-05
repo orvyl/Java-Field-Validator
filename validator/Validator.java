@@ -1,8 +1,9 @@
 package com.Orvyl.addons.validator;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -65,8 +66,29 @@ public final class Validator {
 			}
 		}
 		
-		if(!result)
-			finalizeErrorMessages();
+		if(!result) {
+			try {
+				finalizeErrorMessages();
+				System.out.println(errorMessages);
+			} catch (NoSuchMethodException e) {
+				
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return false;
+		}
 		
 		return result;
 	}
@@ -84,7 +106,7 @@ public final class Validator {
 		customErrorMessages.put(displayFieldName, valAndMessage);
 	}
 	
-	public void finalizeErrorMessages() {
+	public void finalizeErrorMessages() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for(Entry<String, FieldToValidate> entry : fieldsToValidate.entrySet()) {
 			if(!entry.getValue().isFieldPassAllValidation()) {
 				String  displayFieldName = entry.getValue().getDisplayFieldName();
@@ -94,22 +116,23 @@ public final class Validator {
 				for(Entry<String, Validation> validator : validators.entrySet()) {
 					if(!validator.getValue().isPasses()) {
 						String ruleName = validator.getValue().getValidationName();
-						System.out.println("FAIL IN: " + ruleName);
 						specificErrors.put(ruleName, finalErrorMessage(ruleName, displayFieldName, validator.getValue().getParamForValidation()));
 					}
 				}
 				errorMessages.put(displayFieldName, specificErrors);
 			}
 		}
-		System.out.println(errorMessages);
 	}
 	
-	public String finalErrorMessage(String ruleName, String displayFieldName, List<String> methodParam) {
+	public String finalErrorMessage(String ruleName, String displayFieldName, ArrayList<String> methodParam) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		String errMEssageFromUser = "";
 		if(customErrorMessages.containsKey(displayFieldName)) {
 			if(customErrorMessages.get(displayFieldName).containsKey(ruleName))
-				return customErrorMessages.get(displayFieldName).get(ruleName);
+				errMEssageFromUser = customErrorMessages.get(displayFieldName).get(ruleName);
 		}
-		return "";
+		ErrorMessageCreator errCreate = ErrorMessageCreator.getMessageCreator();
+		Method errMessageToCall = errCreate.getClass().getMethod(ruleName + "ErrorMessage", String.class, String.class, ArrayList.class);
+		return (String) errMessageToCall.invoke(errCreate, errMEssageFromUser, displayFieldName, methodParam);
 	}
 
 	public Map<String, Map<String, String>> getCustomErrorMessages() {
