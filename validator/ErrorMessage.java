@@ -1,4 +1,4 @@
-package com.Orvyl.addons.validation;
+package com.Orvyl.addons.validator;
 
 public enum ErrorMessage {
 	
