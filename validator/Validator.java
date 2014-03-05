@@ -11,8 +11,8 @@ import com.Orvyl.addons.validator.exceptions.NoDisplayFieldNameException;
 
 public final class Validator {
 	private Map<String, FieldToValidate> fieldsToValidate;
-	private Map<String, Map<String, String>> customErrorMessages = null;
-	private Map<String, Map<String, String>> errorMessages = null;
+	private Map<String, Map<String, String>> customErrorMessages = new HashMap<String, Map<String,String>>();
+	private Map<String, Map<String, String>> errorMessages = new HashMap<String, Map<String,String>>();
 	
 	public Validator() {
 		fieldsToValidate = new HashMap<String, FieldToValidate>();
@@ -76,8 +76,8 @@ public final class Validator {
 	public void setCustomErrorMessage(String displayFieldName, String ruleName, String msg) {
 		
 		Map<String, String> valAndMessage = new HashMap<String, String>();
-		
 		valAndMessage.put(ruleName, msg);
+		System.out.println(valAndMessage);
 		customErrorMessages.put(displayFieldName, valAndMessage);
 	}
 	
@@ -97,6 +97,7 @@ public final class Validator {
 				errorMessages.put(displayFieldName, specificErrors);
 			}
 		}
+		System.out.println(errorMessages);
 	}
 	
 	public String finalErrorMessage(String ruleName, String displayFieldName, List<String> methodParam) {

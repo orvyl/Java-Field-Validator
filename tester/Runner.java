@@ -6,7 +6,7 @@ public class Runner {
 
 	public static void main(String[] args) {
 		String displayFieldName = "Sample Field";
-		String valueToTest = "test";
+		String valueToTest = "";
 		
 		Validator val = Validator.getValidator();
 		val.add(valueToTest, displayFieldName, "required|min:8");
