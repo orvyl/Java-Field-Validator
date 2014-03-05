@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -44,7 +45,7 @@ public final class Validator {
 		}
 	}
 	
-	public void checkValidationParameters(String displayFieldName, String validations) throws NoDisplayFieldNameException, InvalidFormatListValidationException {
+	private void checkValidationParameters(String displayFieldName, String validations) throws NoDisplayFieldNameException, InvalidFormatListValidationException {
 		if(displayFieldName == "")
 			throw new NoDisplayFieldNameException("Display field name is required! It is use as an ID and field name for error message.");
 		if(!validations.matches("([a-z]+(:[a-z0-9]+(,[a-z0-9]+)*)*)(\\|[a-z]+(:[a-z0-9]+(,[a-z0-9]+)*)*)*"))
@@ -69,7 +70,6 @@ public final class Validator {
 		if(!result) {
 			try {
 				finalizeErrorMessages();
-				System.out.println(errorMessages);
 			} catch (NoSuchMethodException e) {
 				
 				e.printStackTrace();
@@ -106,7 +106,7 @@ public final class Validator {
 		customErrorMessages.put(displayFieldName, valAndMessage);
 	}
 	
-	public void finalizeErrorMessages() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	private void finalizeErrorMessages() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for(Entry<String, FieldToValidate> entry : fieldsToValidate.entrySet()) {
 			if(!entry.getValue().isFieldPassAllValidation()) {
 				String  displayFieldName = entry.getValue().getDisplayFieldName();
@@ -124,7 +124,7 @@ public final class Validator {
 		}
 	}
 	
-	public String finalErrorMessage(String ruleName, String displayFieldName, ArrayList<String> methodParam) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	private String finalErrorMessage(String ruleName, String displayFieldName, ArrayList<String> methodParam) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		String errMEssageFromUser = "";
 		if(customErrorMessages.containsKey(displayFieldName)) {
 			if(customErrorMessages.get(displayFieldName).containsKey(ruleName))
@@ -137,5 +137,16 @@ public final class Validator {
 
 	public Map<String, Map<String, String>> getCustomErrorMessages() {
 		return customErrorMessages;
+	}
+	
+	public List<String> getListErrorMessages() {
+		List<String> errMsgs = new ArrayList<String>();
+		if(errorMessages != null) {
+			for(Entry<String, Map<String, String>> entry : errorMessages.entrySet()) {
+				for(Entry<String, String> msg : entry.getValue().entrySet())
+					errMsgs.add(msg.getValue());
+			}
+		}
+		return errMsgs;
 	}
 }

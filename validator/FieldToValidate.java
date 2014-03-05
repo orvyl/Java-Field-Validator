@@ -39,8 +39,6 @@ public class FieldToValidate {
 		}
 	}
 	
-	
-	
 	public boolean isFieldPassAllValidation() {
 		return fieldPassAllValidation;
 	}
