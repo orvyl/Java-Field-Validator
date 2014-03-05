@@ -10,8 +10,8 @@ public class Runner {
 		
 		Validator val = Validator.getValidator();
 		val.add(valueToTest, displayFieldName, "required|min:8");
-		val.setCustomErrorMessage("Test Field", "required", "This SAMPLE FIELD is required!");
-		val.setCustomErrorMessage("Test Field", "min", "SAMPLE FIELD must be grater than 8");
+		val.setCustomErrorMessage(displayFieldName, "required", "This SAMPLE FIELD is required!");
+		val.setCustomErrorMessage(displayFieldName, "min", "SAMPLE FIELD must be grater than 8");
 		
 		if(val.passes())
 			System.out.println("Success!!!!");

@@ -8,7 +8,7 @@ public final class Validation {
 	private Object valueToValidate;
 	private String validationName;
 	private ArrayList<String> paramForValidation = null;
-	private boolean passes = false;
+	private boolean passes;
 	
 	public Validation(Object valueToValidate, String validationName) {
 		this.valueToValidate = valueToValidate;
@@ -21,6 +21,11 @@ public final class Validation {
 			
 			Method methodToCall = rules.getClass().getMethod(validationName + "Rule", Object.class, ArrayList.class);
 			passes = (boolean) methodToCall.invoke(rules, valueToValidate, paramForValidation);
+			
+			if(passes)
+				System.out.println(validationName + ": TRUE");
+			else
+				System.out.println(validationName + ": FALSE");
 			
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block

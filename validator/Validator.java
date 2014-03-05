@@ -74,10 +74,13 @@ public final class Validator {
 	public boolean fails() { return !passes(); }
 	
 	public void setCustomErrorMessage(String displayFieldName, String ruleName, String msg) {
+		if(customErrorMessages.containsKey(displayFieldName)){
+			customErrorMessages.get(displayFieldName).put(ruleName, msg);
+			return;
+		}
 		
 		Map<String, String> valAndMessage = new HashMap<String, String>();
 		valAndMessage.put(ruleName, msg);
-		System.out.println(valAndMessage);
 		customErrorMessages.put(displayFieldName, valAndMessage);
 	}
 	
@@ -91,6 +94,7 @@ public final class Validator {
 				for(Entry<String, Validation> validator : validators.entrySet()) {
 					if(!validator.getValue().isPasses()) {
 						String ruleName = validator.getValue().getValidationName();
+						System.out.println("FAIL IN: " + ruleName);
 						specificErrors.put(ruleName, finalErrorMessage(ruleName, displayFieldName, validator.getValue().getParamForValidation()));
 					}
 				}
