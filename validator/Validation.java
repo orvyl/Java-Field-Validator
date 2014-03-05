@@ -43,6 +43,10 @@ public final class Validation {
 			paramForValidation.add(val);
 	}
 	
+	public ArrayList<String> getParamForValidation() {
+		return paramForValidation;
+	}
+
 	public boolean isPasses() {
 		return passes;
 	}

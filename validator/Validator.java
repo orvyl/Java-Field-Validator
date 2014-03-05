@@ -2,6 +2,7 @@ package com.Orvyl.addons.validator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -11,6 +12,7 @@ import com.Orvyl.addons.validator.exceptions.NoDisplayFieldNameException;
 public final class Validator {
 	private Map<String, FieldToValidate> fieldsToValidate;
 	private Map<String, Map<String, String>> customErrorMessages = null;
+	private Map<String, Map<String, String>> errorMessages = null;
 	
 	public Validator() {
 		fieldsToValidate = new HashMap<String, FieldToValidate>();
@@ -49,27 +51,60 @@ public final class Validator {
 	}
 	
 	public boolean passes() {
+		boolean result = true;
 		for(Entry<String, FieldToValidate> entry : fieldsToValidate.entrySet()){
 			try {
+				
 				entry.getValue().startValidations();
+				if(!entry.getValue().isFieldPassAllValidation())
+					result = false;
+				
 			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 				return false;
 			}
 		}
-		return true;
+		
+		if(!result)
+			finalizeErrorMessages();
+		
+		return result;
 	}
 	
 	public boolean fails() { return !passes(); }
 	
-	@SuppressWarnings("unchecked")
-	public void setErrorMessage(String displayFieldName, String ruleName, String msg) {
+	public void setCustomErrorMessage(String displayFieldName, String ruleName, String msg) {
 		
-		@SuppressWarnings("rawtypes")
-		Map valAndMessage = new HashMap();
+		Map<String, String> valAndMessage = new HashMap<String, String>();
 		
 		valAndMessage.put(ruleName, msg);
 		customErrorMessages.put(displayFieldName, valAndMessage);
+	}
+	
+	public void finalizeErrorMessages() {
+		for(Entry<String, FieldToValidate> entry : fieldsToValidate.entrySet()) {
+			if(!entry.getValue().isFieldPassAllValidation()) {
+				String  displayFieldName = entry.getValue().getDisplayFieldName();
+				Map<String, String> specificErrors = new HashMap<String, String>();
+				
+				Map<String, Validation> validators = entry.getValue().getValidators();
+				for(Entry<String, Validation> validator : validators.entrySet()) {
+					if(!validator.getValue().isPasses()) {
+						String ruleName = validator.getValue().getValidationName();
+						specificErrors.put(ruleName, finalErrorMessage(ruleName, displayFieldName, validator.getValue().getParamForValidation()));
+					}
+				}
+				errorMessages.put(displayFieldName, specificErrors);
+			}
+		}
+	}
+	
+	public String finalErrorMessage(String ruleName, String displayFieldName, List<String> methodParam) {
+		if(customErrorMessages.containsKey(displayFieldName)) {
+			if(customErrorMessages.get(displayFieldName).containsKey(ruleName))
+				return customErrorMessages.get(displayFieldName).get(ruleName);
+		}
+		return "";
 	}
 
 	public Map<String, Map<String, String>> getCustomErrorMessages() {

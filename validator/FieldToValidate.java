@@ -9,6 +9,7 @@ public class FieldToValidate {
 	private Object valueToValidate;
 	private String displayFieldName;
 	private Map<String, Validation> validators = new HashMap<String, Validation>();
+	private boolean fieldPassAllValidation = true;
 	
 	public Map<String, Validation> getValidators() {
 		return validators;
@@ -30,9 +31,20 @@ public class FieldToValidate {
 	public void startValidations() throws InvocationTargetException {
 		for(Entry<String, Validation> entry : validators.entrySet()) {
 			entry.getValue().performValidation();
+			
+			if(!entry.getValue().isPasses()) {
+				if(fieldPassAllValidation)
+					fieldPassAllValidation = false;
+			}
 		}
 	}
 	
+	
+	
+	public boolean isFieldPassAllValidation() {
+		return fieldPassAllValidation;
+	}
+
 	public Object getValueToValidate() {
 		return valueToValidate;
 	}

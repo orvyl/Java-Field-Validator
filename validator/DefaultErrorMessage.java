@@ -1,6 +1,6 @@
 package com.Orvyl.addons.validator;
 
-public enum ErrorMessage {
+public enum DefaultErrorMessage {
 	
 	REQUIRED(":fieldname is required."),
 	MIN(":fieldname must be at least :minvalue character"),
@@ -8,7 +8,7 @@ public enum ErrorMessage {
 	
 	private String errMsg;
 	
-	private ErrorMessage(String errMsg) {
+	private DefaultErrorMessage(String errMsg) {
 		this.errMsg = errMsg;
 	}
 	
