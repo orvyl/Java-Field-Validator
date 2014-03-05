@@ -1,8 +1,10 @@
 package com.Orvyl.addons.validator;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class ValidationRules {
+import com.Orvyl.addons.validator.exceptions.InvalidParameterToMethodException;
+
+public final class ValidationRules {
 	private static ValidationRules rules = null;
 	
 	public static ValidationRules getRules() {
@@ -11,22 +13,18 @@ public class ValidationRules {
 		return rules;
 	}
 	
-	public String requiredRule(List<Object> param) {
-		String errMsg = "";
-		String valueToTest = param.get(0).toString();
+	public boolean requiredRule(Object valueToTest, ArrayList<String> param) {
+		System.out.println("requiredRule|value: " + valueToTest.toString());
 		
-		if(valueToTest == "") errMsg = ErrorMessage.REQUIRED.getErrorMessage();
-		
-		return errMsg;
+		if(valueToTest.toString() == "")
+			return false;
+		return true;
 	}
 	
-	public String minRule(List<Object> param) {
-		System.out.println("**minRule");
-		return "";
-	}
-	
-	public String maxRule(List<Object> param) {
-		System.out.println("**maxRule");
-		return "";
+	public boolean minRule(Object valueToTest, ArrayList<String> param) throws InvalidParameterToMethodException {
+		if(param == null) throw new InvalidParameterToMethodException("Invalid parameter for MIN validation(expecting an integer)!");
+
+		System.out.println("minRule|value: " + valueToTest.toString() + "|param size:" + param.size());
+		return true;
 	}
 }
