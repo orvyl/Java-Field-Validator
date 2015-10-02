@@ -18,6 +18,4 @@ if(val.fail()) {
 }
 ```
 
-##### NOTE: This is still under development. When I'm done with v1.0.0, I will start accepting pull request. :)
-
     
