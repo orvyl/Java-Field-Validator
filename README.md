@@ -1,7 +1,7 @@
-Quick Java Validator
+( TestProject [deprecated] ) Quick Java Validator
 ====================
 
-An easy-to-use validation for fields/variables expecially for GET/POST requests. I based this from both Code Igniter and Laravel validations.
+Add-on for string validation.
 
 how to use:
 --------------
