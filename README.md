@@ -1,7 +1,7 @@
-( TestProject [deprecated] ) Quick Java Validator
+Quick Java Validator
 ====================
 
-Add-on for string validation.
+Add-on for string validation. ( TestProject [deprecated] ) 
 
 how to use:
 --------------
